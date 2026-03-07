@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { formatGender } from '../utils/helpers';
 
 const API_URL = '/api';
 
@@ -152,7 +153,7 @@ export default function PatientCard({ patient, isExpanded, onToggle, onDelete, o
               <h3 className="font-bold text-slate-900">
                 {patient.firstName} {patient.lastName}
               </h3>
-              <p className="text-sm text-slate-500">{patient.age} yaş • {patient.gender}</p>
+              <p className="text-sm text-slate-500">{patient.age} yaş • {formatGender(patient.gender)}</p>
             </div>
           </div>
           <div className="flex flex-col items-end space-y-1">

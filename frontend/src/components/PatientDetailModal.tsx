@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { formatGender } from '../utils/helpers';
 
 const API_URL = '/api';
 
@@ -141,7 +142,7 @@ export default function PatientDetailModal({ patient, onClose, onUpdate }: Props
               <div className="flex items-center space-x-4 text-sky-100">
                 <span>{patient.age} yaş</span>
                 <span>•</span>
-                <span>{patient.gender}</span>
+                <span>{formatGender(patient.gender)}</span>
                 <span>•</span>
                 <span>Oda {patient.roomNumber || '-'}, Yatak {patient.bedNumber || '-'}</span>
               </div>
