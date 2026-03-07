@@ -73,6 +73,19 @@ export default function ServicePanel() {
     loadDoctors();
   }, []);
 
+  // Mobile'da daima kart görünümü (liste görünümü dar ekranlarda taşma yapabilir)
+  useEffect(() => {
+    const enforceMobileCardView = () => {
+      if (window.innerWidth < 1024 && viewMode !== 'card') {
+        setViewMode('card');
+      }
+    };
+
+    enforceMobileCardView();
+    window.addEventListener('resize', enforceMobileCardView);
+    return () => window.removeEventListener('resize', enforceMobileCardView);
+  }, [viewMode]);
+
   const loadDoctors = () => {
     const saved = localStorage.getItem('doctors');
     if (saved) {
