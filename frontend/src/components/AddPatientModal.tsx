@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const API_URL = '/api';
@@ -10,6 +10,7 @@ interface Props {
 }
 
 export default function AddPatientModal({ clinicId, onClose, onSuccess }: Props) {
+  const [doctors, setDoctors] = useState<Array<{name: string}>>([]);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -26,6 +27,13 @@ export default function AddPatientModal({ clinicId, onClose, onSuccess }: Props)
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    const saved = localStorage.getItem('doctors');
+    if (saved) {
+      setDoctors(JSON.parse(saved));
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -163,14 +171,20 @@ export default function AddPatientModal({ clinicId, onClose, onSuccess }: Props)
                 <label className="block text-sm font-medium text-slate-700 mb-2">
                   Takip Eden Doktor *
                 </label>
-                <input
-                  type="text"
+                <select
                   required
                   value={formData.attendingDoctor}
                   onChange={(e) => setFormData({ ...formData, attendingDoctor: e.target.value })}
                   className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
-                  placeholder="Dr. Mehmet Kaya"
-                />
+                >
+                  <option value="">Doktor Seçin</option>
+                  {doctors.map((doc, i) => (
+                    <option key={i} value={doc.name}>{doc.name}</option>
+                  ))}
+                </select>
+                {doctors.length === 0 && (
+                  <p className="text-xs text-amber-600 mt-1">⚠️ Ayarlar'dan doktor ekleyin</p>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">
