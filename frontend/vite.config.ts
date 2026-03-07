@@ -7,6 +7,11 @@ export default defineConfig({
   server: {
     port: 18790,
     host: '0.0.0.0',
+    allowedHosts: [
+      'inf.alperagayev.com',
+      'localhost',
+      '127.0.0.1',
+    ],
     proxy: {
       '/api': {
         target: 'http://localhost:3000',
