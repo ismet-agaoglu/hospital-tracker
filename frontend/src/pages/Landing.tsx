@@ -1,21 +1,34 @@
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 export default function Landing() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-sky-50 to-slate-100 relative overflow-hidden">
+      {/* Decorative Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-sky-200/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-emerald-200/20 rounded-full blur-3xl" />
+      </div>
+
       {/* Navbar */}
-      <nav className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <span className="text-2xl">🏥</span>
-              <span className="ml-2 text-xl font-bold text-gray-900">Hospital Tracker</span>
+      <nav className="relative z-10 backdrop-blur-sm bg-white/70 border-b border-slate-200/50">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex justify-between items-center h-20">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-sky-600 to-sky-700 rounded-xl flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <span className="text-2xl font-bold bg-gradient-to-r from-sky-700 to-sky-900 bg-clip-text text-transparent">
+                Hospital Tracker
+              </span>
             </div>
             <button
               onClick={() => navigate('/login')}
-              className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition"
+              className="px-6 py-2.5 bg-sky-700 text-white rounded-xl font-medium hover:bg-sky-800 transition-all hover:shadow-lg hover:shadow-sky-700/30 active:scale-95"
             >
               Giriş Yap
             </button>
@@ -23,57 +36,176 @@ export default function Landing() {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center">
-          <h1 className="text-5xl font-extrabold text-gray-900 sm:text-6xl">
-            Hasta Takip Sistemi
-          </h1>
-          <p className="mt-6 text-xl text-gray-600 max-w-3xl mx-auto">
-            Modern ve güvenli hasta yönetimi. Servis takibi, vizit notları, ilaç orderları ve daha fazlası.
+      {/* Hero Section - Asymmetric Layout */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-20 pb-32">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left Content */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="inline-block mb-4 px-4 py-2 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium">
+              ✨ Yeni Nesil Hasta Takip Sistemi
+            </div>
+            <h1 className="text-6xl font-extrabold text-slate-900 mb-6 leading-tight">
+              Hasta Yönetiminde
+              <span className="block bg-gradient-to-r from-sky-600 to-emerald-500 bg-clip-text text-transparent">
+                Yeni Çağ
+              </span>
+            </h1>
+            <p className="text-xl text-slate-600 mb-8 leading-relaxed">
+              Servis takibi, vizit notları, ilaç orderları ve hasta transfer işlemlerini tek platformda yönetin.
+              Hızlı, güvenli ve kolay.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button
+                onClick={() => navigate('/login')}
+                className="px-8 py-4 bg-gradient-to-r from-sky-600 to-sky-700 text-white rounded-xl font-semibold hover:from-sky-700 hover:to-sky-800 transition-all shadow-lg shadow-sky-600/30 hover:shadow-xl hover:shadow-sky-600/40 active:scale-95"
+              >
+                Hemen Başla →
+              </button>
+              <button className="px-8 py-4 bg-white text-slate-700 rounded-xl font-semibold hover:bg-slate-50 transition-all border border-slate-200 hover:border-slate-300">
+                Demo İzle
+              </button>
+            </div>
+
+            {/* Stats Row */}
+            <div className="mt-12 grid grid-cols-3 gap-6">
+              {[
+                { value: '99.9%', label: 'Uptime' },
+                { value: '500+', label: 'Kullanıcı' },
+                { value: '24/7', label: 'Destek' },
+              ].map((stat, i) => (
+                <div key={i} className="text-center">
+                  <div className="text-3xl font-bold text-sky-700">{stat.value}</div>
+                  <div className="text-sm text-slate-500 mt-1">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Right Visual - Dashboard Preview */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="relative"
+          >
+            <div className="relative bg-white rounded-3xl shadow-2xl border border-slate-200/50 p-8 backdrop-blur-sm">
+              {/* Mock Dashboard */}
+              <div className="space-y-4">
+                {/* Header */}
+                <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white font-bold text-lg">
+                      A
+                    </div>
+                    <div>
+                      <div className="font-semibold text-slate-900">Ahmet Yılmaz</div>
+                      <div className="text-sm text-slate-500">Oda 302 • Yatak 2</div>
+                    </div>
+                  </div>
+                  <div className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-medium">
+                    Aktif
+                  </div>
+                </div>
+
+                {/* Info Cards */}
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    { label: 'Tanı', value: 'Akut Apandisit', icon: '🩺' },
+                    { label: 'Doktor', value: 'Dr. Mehmet K.', icon: '👨‍⚕️' },
+                  ].map((item, i) => (
+                    <div key={i} className="p-4 bg-slate-50 rounded-xl">
+                      <div className="text-2xl mb-2">{item.icon}</div>
+                      <div className="text-xs text-slate-500 mb-1">{item.label}</div>
+                      <div className="font-semibold text-slate-900 text-sm">{item.value}</div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Progress Bar */}
+                <div className="pt-4">
+                  <div className="flex justify-between text-xs text-slate-600 mb-2">
+                    <span>Tedavi İlerlemesi</span>
+                    <span>75%</span>
+                  </div>
+                  <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <div className="h-full w-3/4 bg-gradient-to-r from-sky-600 to-emerald-500 rounded-full" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Floating Badge */}
+              <div className="absolute -top-4 -right-4 px-4 py-2 bg-gradient-to-r from-sky-600 to-emerald-500 text-white rounded-xl shadow-lg text-sm font-medium">
+                ⚡ Real-time
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Features Section */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pb-32">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-slate-900 mb-4">
+            Tam Özellikli Hasta Yönetimi
+          </h2>
+          <p className="text-lg text-slate-600">
+            Modern hastaneler için tasarlandı
           </p>
-          <div className="mt-10">
-            <button
-              onClick={() => navigate('/login')}
-              className="bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition shadow-lg"
-            >
-              Hemen Başla →
-            </button>
-          </div>
         </div>
 
-        {/* Features */}
-        <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white p-6 rounded-xl shadow-md">
-            <div className="text-4xl mb-4">📊</div>
-            <h3 className="text-xl font-bold mb-2">Servis Paneli</h3>
-            <p className="text-gray-600">
-              Hastalarınızı liste ve kart görünümünde takip edin. Oda, yatak, vizit notları.
-            </p>
-          </div>
+        <div className="grid md:grid-cols-3 gap-8">
+          {[
+            {
+              icon: '📊',
+              title: 'Servis Paneli',
+              desc: 'Liste ve kart görünümünde hasta takibi. Oda, yatak, vizit notları.',
+              color: 'from-sky-500 to-sky-600',
+            },
+            {
+              icon: '👤',
+              title: 'Hasta Takip',
+              desc: 'Kullanıcı bazlı kişisel hasta takibi. Todo listesi ve ilaç orderları.',
+              color: 'from-emerald-500 to-emerald-600',
+            },
+            {
+              icon: '🔐',
+              title: 'Güvenli Erişim',
+              desc: 'Rol tabanlı yetkilendirme. Global Admin, Clinic Admin ve Staff rolleri.',
+              color: 'from-purple-500 to-purple-600',
+            },
+          ].map((feature, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 + i * 0.1 }}
+              className="group relative bg-white rounded-2xl p-8 shadow-lg border border-slate-200/50 hover:shadow-xl transition-all hover:-translate-y-1"
+            >
+              <div className={`text-5xl mb-4 group-hover:scale-110 transition-transform`}>
+                {feature.icon}
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">
+                {feature.title}
+              </h3>
+              <p className="text-slate-600 leading-relaxed">
+                {feature.desc}
+              </p>
 
-          <div className="bg-white p-6 rounded-xl shadow-md">
-            <div className="text-4xl mb-4">👤</div>
-            <h3 className="text-xl font-bold mb-2">Hasta Takip</h3>
-            <p className="text-gray-600">
-              Kullanıcı bazlı kişisel hasta takibi. Todo listesi ve ilaç orderları.
-            </p>
-          </div>
-
-          <div className="bg-white p-6 rounded-xl shadow-md">
-            <div className="text-4xl mb-4">🔐</div>
-            <h3 className="text-xl font-bold mb-2">Güvenli Erişim</h3>
-            <p className="text-gray-600">
-              Rol tabanlı yetkilendirme. Global Admin, Clinic Admin ve Staff rolleri.
-            </p>
-          </div>
+              {/* Gradient Border on Hover */}
+              <div className={`absolute inset-0 rounded-2xl bg-gradient-to-r ${feature.color} opacity-0 group-hover:opacity-10 transition-opacity -z-10`} />
+            </motion.div>
+          ))}
         </div>
       </div>
 
       {/* Footer */}
-      <footer className="bg-white border-t mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <p className="text-center text-gray-500">
+      <footer className="relative z-10 border-t border-slate-200 bg-white/50 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
+          <p className="text-center text-slate-500">
             © 2026 Hospital Tracker. Tüm hakları saklıdır.
           </p>
         </div>
