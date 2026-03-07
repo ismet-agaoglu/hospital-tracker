@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:18790/api';
+const API_URL = '/api'; // Proxy via Vite
 
 export default function Login() {
   const navigate = useNavigate();
