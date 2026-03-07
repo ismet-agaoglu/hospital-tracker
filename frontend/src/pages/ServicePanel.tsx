@@ -185,13 +185,22 @@ export default function ServicePanel() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-20 md:pb-8">
+    <div className="min-h-screen bg-slate-50 pb-20 md:pb-8 overflow-x-hidden">
       {/* Minimal Header */}
       <div className="bg-white border-b border-slate-200 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <h1 className="text-xl font-semibold text-slate-900">Servis • {selectedClinic.name}</h1>
-            <div className="hidden md:flex items-center space-x-2">
+            <h1 className="text-lg md:text-xl font-semibold text-slate-900 truncate">Servis • {selectedClinic.name}</h1>
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={() => setShowAddModal(true)}
+                className="hidden md:flex items-center space-x-2 px-4 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 text-sm font-medium"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                <span>Yeni Hasta</span>
+              </button>
               <button
                 onClick={() => navigate('/panels')}
                 className="p-2 text-slate-500 hover:text-slate-900 rounded-lg"
@@ -203,7 +212,7 @@ export default function ServicePanel() {
               </button>
               <button
                 onClick={handleLogout}
-                className="p-2 text-slate-500 hover:text-slate-900 rounded-lg"
+                className="hidden md:block p-2 text-slate-500 hover:text-slate-900 rounded-lg"
                 title="Çıkış"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -216,7 +225,7 @@ export default function ServicePanel() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
         {/* Compact Stats */}
         {showStats && (
           <div className="mb-4 bg-white rounded-lg border border-slate-200 p-4">
@@ -243,10 +252,11 @@ export default function ServicePanel() {
         )}
 
         {/* Compact Controls */}
-        <div className="mb-4">
+        <div className="mb-4 space-y-3">
+          {/* Row 1: Search + Quick Actions */}
           <div className="flex items-center gap-2">
             {/* Search */}
-            <div className="relative flex-1">
+            <div className="relative flex-1 min-w-0">
               <input
                 type="text"
                 value={searchQuery}
@@ -262,7 +272,7 @@ export default function ServicePanel() {
             {/* Stats Toggle */}
             <button
               onClick={() => setShowStats(!showStats)}
-              className={`p-2 border rounded-lg ${showStats ? 'bg-sky-600 text-white border-sky-600' : 'border-slate-200 text-slate-600'}`}
+              className={`flex-shrink-0 p-2 border rounded-lg ${showStats ? 'bg-sky-600 text-white border-sky-600' : 'border-slate-200 text-slate-600'}`}
               title="İstatistikler"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -270,11 +280,33 @@ export default function ServicePanel() {
               </svg>
             </button>
 
-            {/* Filters */}
+            {/* View Toggle - Desktop Only */}
+            <div className="hidden lg:flex flex-shrink-0 border border-slate-200 rounded-lg">
+              <button
+                onClick={() => setViewMode('card')}
+                className={`p-2 ${viewMode === 'card' ? 'bg-sky-600 text-white' : 'text-slate-500'} rounded-l-lg transition-colors`}
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                </svg>
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className={`p-2 ${viewMode === 'list' ? 'bg-sky-600 text-white' : 'text-slate-500'} rounded-r-lg border-l transition-colors`}
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          {/* Row 2: Filters */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-1">
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
-              className="px-3 py-2 border border-slate-200 rounded-lg bg-white text-sm"
+              className="flex-shrink-0 px-3 py-2 border border-slate-200 rounded-lg bg-white text-sm focus:ring-2 focus:ring-sky-500"
             >
               <option value="room">Oda</option>
               <option value="name">İsim</option>
@@ -283,33 +315,22 @@ export default function ServicePanel() {
             <select
               value={filterDoctor}
               onChange={(e) => setFilterDoctor(e.target.value)}
-              className="hidden md:block px-3 py-2 border border-slate-200 rounded-lg bg-white text-sm"
+              className="flex-shrink-0 px-3 py-2 border border-slate-200 rounded-lg bg-white text-sm focus:ring-2 focus:ring-sky-500"
             >
               <option value="all">Tüm Doktorlar</option>
               {uniqueDoctors.map((doc) => (
                 <option key={doc} value={doc}>{doc}</option>
               ))}
             </select>
-
-            {/* View Toggle */}
-            <div className="hidden md:flex border border-slate-200 rounded-lg">
-              <button
-                onClick={() => setViewMode('card')}
-                className={`p-2 ${viewMode === 'card' ? 'bg-sky-600 text-white' : 'text-slate-500'} rounded-l-lg`}
-              >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                </svg>
-              </button>
-              <button
-                onClick={() => setViewMode('list')}
-                className={`p-2 ${viewMode === 'list' ? 'bg-sky-600 text-white' : 'text-slate-500'} rounded-r-lg border-l`}
-              >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              </button>
-            </div>
+            <select
+              value={filterGender}
+              onChange={(e) => setFilterGender(e.target.value)}
+              className="flex-shrink-0 px-3 py-2 border border-slate-200 rounded-lg bg-white text-sm focus:ring-2 focus:ring-sky-500"
+            >
+              <option value="all">Cinsiyet</option>
+              <option value="Erkek">Erkek</option>
+              <option value="Kadın">Kadın</option>
+            </select>
           </div>
         </div>
 
@@ -423,17 +444,17 @@ export default function ServicePanel() {
 // Patient Table Component
 function PatientTable({ patients, onSelect }: { patients: Patient[]; onSelect: (p: Patient) => void }) {
   return (
-    <div className="bg-white rounded-xl border border-slate-200 overflow-hidden overflow-x-auto">
-      <table className="w-full">
+    <div className="bg-white rounded-xl border border-slate-200 overflow-x-auto">
+      <table className="w-full min-w-[800px]">
         <thead className="bg-slate-50 border-b border-slate-200">
           <tr>
-            <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700">Oda</th>
-            <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700">Hasta</th>
-            <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700">Yaş</th>
-            <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700">Tanı</th>
-            <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700">Doktor</th>
-            <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700">Yatış Süresi</th>
-            <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700">Durum</th>
+            <th className="px-4 md:px-6 py-3 md:py-4 text-left text-xs md:text-sm font-semibold text-slate-700 whitespace-nowrap">Oda</th>
+            <th className="px-4 md:px-6 py-3 md:py-4 text-left text-xs md:text-sm font-semibold text-slate-700 whitespace-nowrap">Hasta</th>
+            <th className="px-4 md:px-6 py-3 md:py-4 text-left text-xs md:text-sm font-semibold text-slate-700 whitespace-nowrap">Yaş</th>
+            <th className="px-4 md:px-6 py-3 md:py-4 text-left text-xs md:text-sm font-semibold text-slate-700 whitespace-nowrap">Tanı</th>
+            <th className="px-4 md:px-6 py-3 md:py-4 text-left text-xs md:text-sm font-semibold text-slate-700 whitespace-nowrap">Doktor</th>
+            <th className="px-4 md:px-6 py-3 md:py-4 text-left text-xs md:text-sm font-semibold text-slate-700 whitespace-nowrap">Yatış Süresi</th>
+            <th className="px-4 md:px-6 py-3 md:py-4 text-left text-xs md:text-sm font-semibold text-slate-700 whitespace-nowrap">Durum</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-100">
@@ -445,27 +466,27 @@ function PatientTable({ patients, onSelect }: { patients: Patient[]; onSelect: (
                 onClick={() => onSelect(patient)}
                 className="hover:bg-slate-50 cursor-pointer transition-colors"
               >
-                <td className="px-6 py-4">
-                  <span className="inline-flex items-center justify-center w-10 h-10 bg-sky-600 text-white font-bold rounded-lg">
+                <td className="px-4 md:px-6 py-3 md:py-4">
+                  <span className="inline-flex items-center justify-center w-8 h-8 md:w-10 md:h-10 bg-sky-600 text-white font-bold rounded-lg text-sm">
                     {patient.roomNumber || '?'}
                   </span>
                 </td>
-                <td className="px-6 py-4">
-                  <div className="font-semibold text-slate-900">
+                <td className="px-4 md:px-6 py-3 md:py-4">
+                  <div className="font-semibold text-slate-900 text-sm md:text-base whitespace-nowrap">
                     {patient.firstName} {patient.lastName}
                   </div>
-                  <div className="text-sm text-slate-500">Yatak {patient.bedNumber || '-'}</div>
+                  <div className="text-xs md:text-sm text-slate-500">Yatak {patient.bedNumber || '-'}</div>
                 </td>
-                <td className="px-6 py-4 text-slate-600">{patient.age}</td>
-                <td className="px-6 py-4 text-slate-600">{patient.diagnosis}</td>
-                <td className="px-6 py-4 text-slate-600">{patient.attendingDoctor}</td>
-                <td className="px-6 py-4">
-                  <span className="inline-flex px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium">
+                <td className="px-4 md:px-6 py-3 md:py-4 text-slate-600 text-sm">{patient.age}</td>
+                <td className="px-4 md:px-6 py-3 md:py-4 text-slate-600 text-sm max-w-[200px] truncate">{patient.diagnosis}</td>
+                <td className="px-4 md:px-6 py-3 md:py-4 text-slate-600 text-sm whitespace-nowrap">{patient.attendingDoctor}</td>
+                <td className="px-4 md:px-6 py-3 md:py-4">
+                  <span className="inline-flex px-2 md:px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs md:text-sm font-medium whitespace-nowrap">
                     {days} gün
                   </span>
                 </td>
-                <td className="px-6 py-4">
-                  <span className="inline-flex px-3 py-1 bg-sky-100 text-sky-700 rounded-full text-xs font-medium">
+                <td className="px-4 md:px-6 py-3 md:py-4">
+                  <span className="inline-flex px-2 md:px-3 py-1 bg-sky-100 text-sky-700 rounded-full text-xs font-medium whitespace-nowrap">
                     Aktif
                   </span>
                 </td>
