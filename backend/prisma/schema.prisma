@@ -1,0 +1,117 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  GLOBAL_ADMIN
+  CLINIC_ADMIN
+  STAFF
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum PanelType {
+  SERVIS
+  TAKIP
+}
+
+model User {
+  id           String       @id @default(uuid())
+  email        String       @unique
+  password     String
+  firstName    String
+  lastName     String
+  role         UserRole
+  clinics      UserClinic[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+model Clinic {
+  id            String         @id @default(uuid())
+  name          String
+  address       String?
+  users         UserClinic[]
+  patients      Patient[]
+  servicePanels ServicePanel[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model UserClinic {
+  id          String   @id @default(uuid())
+  userId      String
+  clinicId    String
+  permissions String   // JSON array as string
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  clinic      Clinic   @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  
+  @@unique([userId, clinicId])
+}
+
+model Patient {
+  id              String     @id @default(uuid())
+  firstName       String
+  lastName        String
+  age             Int
+  gender          Gender
+  diagnosis       String
+  attendingDoctor String
+  admissionDate   DateTime
+  roomNumber      String?
+  bedNumber       String?
+  visitNote       String?
+  
+  clinicId        String
+  clinic          Clinic     @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  
+  panelType       PanelType
+  assignedUserId  String?
+  
+  todos           Todo[]
+  orders          Order[]
+  
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+}
+
+model Todo {
+  id          String   @id @default(uuid())
+  patientId   String
+  description String
+  completed   Boolean  @default(false)
+  createdBy   String
+  patient     Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Order {
+  id         String   @id @default(uuid())
+  patientId  String
+  medication String
+  dosage     String?
+  frequency  String?
+  notes      String?
+  createdBy  String
+  patient    Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model ServicePanel {
+  id        String   @id @default(uuid())
+  clinicId  String   @unique
+  clinic    Clinic   @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
