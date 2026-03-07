@@ -261,7 +261,7 @@ export default function ServicePanel() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 mb-20 md:mb-0">
         {/* Compact Stats */}
         {showStats && (
           <div className="mb-4 bg-white rounded-lg border border-slate-200 p-4">
