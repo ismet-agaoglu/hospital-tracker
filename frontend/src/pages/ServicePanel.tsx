@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import PatientDetailModal from '../components/PatientDetailModal';
+import AddPatientModal from '../components/AddPatientModal';
 
 const API_URL = '/api';
 
@@ -266,28 +268,29 @@ export default function ServicePanel() {
         )}
       </div>
 
-      {/* Patient Detail Modal - Will implement next */}
+      {/* Patient Detail Modal */}
       {selectedPatient && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-slate-900">
-                  {selectedPatient.firstName} {selectedPatient.lastName}
-                </h2>
-                <button
-                  onClick={() => setSelectedPatient(null)}
-                  className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
-                >
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-              <p className="text-slate-600">Detay modal yakında eklenecek...</p>
-            </div>
-          </div>
-        </div>
+        <PatientDetailModal
+          patient={selectedPatient}
+          onClose={() => setSelectedPatient(null)}
+          onUpdate={() => {
+            fetchPatients();
+            // Refresh selected patient
+            const updatedPatient = patients.find(p => p.id === selectedPatient.id);
+            if (updatedPatient) {
+              setSelectedPatient(updatedPatient);
+            }
+          }}
+        />
+      )}
+
+      {/* Add Patient Modal */}
+      {showAddModal && (
+        <AddPatientModal
+          clinicId={selectedClinic.id}
+          onClose={() => setShowAddModal(false)}
+          onSuccess={fetchPatients}
+        />
       )}
     </div>
   );

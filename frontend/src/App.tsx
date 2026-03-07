@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import ClinicSelect from './pages/ClinicSelect';
 import PanelSelect from './pages/PanelSelect';
 import ServicePanel from './pages/ServicePanel';
+import FollowupPanel from './pages/FollowupPanel';
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
         <Route path="/clinics" element={<ClinicSelect />} />
         <Route path="/panels" element={<PanelSelect />} />
         <Route path="/service-panel" element={<ServicePanel />} />
-        <Route path="/followup-panel" element={<div className="p-8">🏗️ Hasta Takip Paneli - Coming Soon</div>} />
+        <Route path="/followup-panel" element={<FollowupPanel />} />
       </Routes>
     </Router>
   );
