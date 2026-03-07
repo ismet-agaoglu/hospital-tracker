@@ -338,11 +338,11 @@ export default function ServicePanel() {
           </div>
 
           {/* Row 2: Filters */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-1">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
-              className="flex-shrink-0 px-3 py-2 border border-slate-200 rounded-lg bg-white text-sm focus:ring-2 focus:ring-sky-500"
+              className="w-full px-3 py-2 border border-slate-200 rounded-lg bg-white text-sm focus:ring-2 focus:ring-sky-500"
             >
               <option value="room">Oda</option>
               <option value="name">İsim</option>
@@ -351,7 +351,7 @@ export default function ServicePanel() {
             <select
               value={filterDoctor}
               onChange={(e) => setFilterDoctor(e.target.value)}
-              className="flex-shrink-0 px-3 py-2 border border-slate-200 rounded-lg bg-white text-sm focus:ring-2 focus:ring-sky-500"
+              className="w-full px-3 py-2 border border-slate-200 rounded-lg bg-white text-sm focus:ring-2 focus:ring-sky-500"
             >
               <option value="all">Tüm Doktorlar</option>
               {uniqueDoctors.map((doc) => (
@@ -361,7 +361,7 @@ export default function ServicePanel() {
             <select
               value={filterGender}
               onChange={(e) => setFilterGender(e.target.value)}
-              className="flex-shrink-0 px-3 py-2 border border-slate-200 rounded-lg bg-white text-sm focus:ring-2 focus:ring-sky-500"
+              className="w-full px-3 py-2 border border-slate-200 rounded-lg bg-white text-sm focus:ring-2 focus:ring-sky-500"
             >
               <option value="all">Cinsiyet</option>
               <option value="Erkek">Erkek</option>
@@ -372,7 +372,33 @@ export default function ServicePanel() {
 
         {/* Patient List/Cards */}
         {filteredPatients.length === 0 ? (
-          <div className="text-center py-12 text-slate-500">Hasta bulunamadı</div>
+          <div className="bg-white border border-slate-200 rounded-xl p-8 text-center">
+            <div className="mx-auto w-14 h-14 rounded-full bg-sky-50 text-sky-600 flex items-center justify-center mb-4">
+              <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V7a2 2 0 00-2-2h-3V3H9v2H6a2 2 0 00-2 2v6m16 0v6a2 2 0 01-2 2H6a2 2 0 01-2-2v-6m16 0h-5m-6 0H4m5 0v-2a1 1 0 011-1h4a1 1 0 011 1v2" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-semibold text-slate-900 mb-1">Hasta bulunamadı</h3>
+            <p className="text-slate-500 mb-5">Henüz kayıt yok veya filtreler sonucu boş döndü.</p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
+              <button
+                onClick={() => setShowAddModal(true)}
+                className="px-4 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 text-sm font-medium"
+              >
+                + Yeni Hasta Ekle
+              </button>
+              <button
+                onClick={() => {
+                  setSearchQuery('');
+                  setFilterDoctor('all');
+                  setFilterGender('all');
+                }}
+                className="px-4 py-2 border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 text-sm"
+              >
+                Filtreleri Temizle
+              </button>
+            </div>
+          </div>
         ) : viewMode === 'card' ? (
           <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
             {filteredPatients.map((patient) => (

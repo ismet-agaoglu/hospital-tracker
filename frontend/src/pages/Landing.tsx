@@ -14,15 +14,15 @@ export default function Landing() {
 
       {/* Navbar */}
       <nav className="relative z-10 backdrop-blur-sm bg-white/70 border-b border-slate-200/50">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-sky-600 to-sky-700 rounded-xl flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16 sm:h-20">
+            <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-sky-600 to-sky-700 rounded-xl flex items-center justify-center flex-shrink-0">
+                <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-sky-700 to-sky-900 bg-clip-text text-transparent">
+              <span className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-sky-700 to-sky-900 bg-clip-text text-transparent truncate">
                 Hospital Tracker
               </span>
             </div>
@@ -37,8 +37,8 @@ export default function Landing() {
       </nav>
 
       {/* Hero Section - Asymmetric Layout */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-20 pb-32">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-16 lg:pt-20 pb-16 sm:pb-24 lg:pb-32">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Content */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -48,24 +48,24 @@ export default function Landing() {
             <div className="inline-block mb-4 px-4 py-2 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium">
               ✨ Yeni Nesil Hasta Takip Sistemi
             </div>
-            <h1 className="text-6xl font-extrabold text-slate-900 mb-6 leading-tight">
+            <h1 className="text-5xl sm:text-6xl lg:text-6xl font-extrabold text-slate-900 mb-5 sm:mb-6 leading-tight break-words">
               Hasta Yönetiminde
               <span className="block bg-gradient-to-r from-sky-600 to-emerald-500 bg-clip-text text-transparent">
                 Yeni Çağ
               </span>
             </h1>
-            <p className="text-xl text-slate-600 mb-8 leading-relaxed">
+            <p className="text-base sm:text-lg lg:text-xl text-slate-600 mb-6 sm:mb-8 leading-relaxed max-w-xl">
               Servis takibi, vizit notları, ilaç orderları ve hasta transfer işlemlerini tek platformda yönetin.
               Hızlı, güvenli ve kolay.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <button
                 onClick={() => navigate('/login')}
-                className="px-8 py-4 bg-gradient-to-r from-sky-600 to-sky-700 text-white rounded-xl font-semibold hover:from-sky-700 hover:to-sky-800 transition-all shadow-lg shadow-sky-600/30 hover:shadow-xl hover:shadow-sky-600/40 active:scale-95"
+                className="w-full sm:w-auto px-8 py-3.5 sm:py-4 bg-gradient-to-r from-sky-600 to-sky-700 text-white rounded-xl font-semibold hover:from-sky-700 hover:to-sky-800 transition-all shadow-lg shadow-sky-600/30 hover:shadow-xl hover:shadow-sky-600/40 active:scale-95"
               >
                 Hemen Başla →
               </button>
-              <button className="px-8 py-4 bg-white text-slate-700 rounded-xl font-semibold hover:bg-slate-50 transition-all border border-slate-200 hover:border-slate-300">
+              <button className="w-full sm:w-auto px-8 py-3.5 sm:py-4 bg-white text-slate-700 rounded-xl font-semibold hover:bg-slate-50 transition-all border border-slate-200 hover:border-slate-300">
                 Demo İzle
               </button>
             </div>
@@ -92,7 +92,7 @@ export default function Landing() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative"
           >
-            <div className="relative bg-white rounded-3xl shadow-2xl border border-slate-200/50 p-8 backdrop-blur-sm">
+            <div className="relative bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-200/50 p-4 sm:p-6 lg:p-8 backdrop-blur-sm">
               {/* Mock Dashboard */}
               <div className="space-y-4">
                 {/* Header */}
@@ -138,7 +138,7 @@ export default function Landing() {
               </div>
 
               {/* Floating Badge */}
-              <div className="absolute -top-4 -right-4 px-4 py-2 bg-gradient-to-r from-sky-600 to-emerald-500 text-white rounded-xl shadow-lg text-sm font-medium">
+              <div className="absolute top-3 right-3 sm:-top-4 sm:-right-4 px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-sky-600 to-emerald-500 text-white rounded-lg sm:rounded-xl shadow-lg text-xs sm:text-sm font-medium">
                 ⚡ Real-time
               </div>
             </div>
@@ -147,9 +147,9 @@ export default function Landing() {
       </div>
 
       {/* Features Section */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pb-32">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-slate-900 mb-4">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 sm:pb-24 lg:pb-32">
+        <div className="text-center mb-10 sm:mb-16">
+          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
             Tam Özellikli Hasta Yönetimi
           </h2>
           <p className="text-lg text-slate-600">
@@ -157,7 +157,7 @@ export default function Landing() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-5 sm:gap-8">
           {[
             {
               icon: '📊',
@@ -183,7 +183,7 @@ export default function Landing() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.6 + i * 0.1 }}
-              className="group relative bg-white rounded-2xl p-8 shadow-lg border border-slate-200/50 hover:shadow-xl transition-all hover:-translate-y-1"
+              className="group relative bg-white rounded-2xl p-6 sm:p-8 shadow-lg border border-slate-200/50 hover:shadow-xl transition-all hover:-translate-y-1"
             >
               <div className={`text-5xl mb-4 group-hover:scale-110 transition-transform`}>
                 {feature.icon}
