@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import PatientDetailModal from '../components/PatientDetailModal';
 import AddPatientModal from '../components/AddPatientModal';
+import PatientCard from '../components/PatientCard';
+import SettingsModal from '../components/SettingsModal';
+import AllTodosModal from '../components/AllTodosModal';
 import { useTheme } from '../contexts/ThemeContext';
 import { exportPatientsToPDF } from '../utils/exportPDF';
 
@@ -53,7 +56,10 @@ export default function ServicePanel() {
   const [sortBy, setSortBy] = useState<'room' | 'name' | 'date'>('room');
   const [filterDoctor, setFilterDoctor] = useState<string>('all');
   const [filterGender, setFilterGender] = useState<string>('all');
-  const [showStats, setShowStats] = useState(true);
+  const [showStats, setShowStats] = useState(false); // Default kapalı
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [showAllTodosModal, setShowAllTodosModal] = useState(false);
+  const [doctors, setDoctors] = useState<Array<{name: string; color: string}>>([]);
 
   const selectedClinic = JSON.parse(localStorage.getItem('selectedClinic') || '{}');
 
@@ -63,7 +69,20 @@ export default function ServicePanel() {
       return;
     }
     fetchPatients();
+    loadDoctors();
   }, []);
+
+  const loadDoctors = () => {
+    const saved = localStorage.getItem('doctors');
+    if (saved) {
+      setDoctors(JSON.parse(saved));
+    }
+  };
+
+  const getDoctorColor = (doctorName: string) => {
+    const doctor = doctors.find(d => d.name === doctorName);
+    return doctor ? `bg-gradient-to-br ${doctor.color}` : 'bg-gradient-to-br from-slate-600 to-slate-700';
+  };
 
   const fetchPatients = async () => {
     try {
@@ -152,14 +171,13 @@ export default function ServicePanel() {
   });
 
   // Stats
-  const doctors = [...new Set(patients.map(p => p.attendingDoctor))];
+  const uniqueDoctors = [...new Set(patients.map(p => p.attendingDoctor))];
   const stats = {
     total: patients.length,
-    byDoctor: doctors.map(doc => ({
+    byDoctor: uniqueDoctors.map(doc => ({
       name: doc,
       count: patients.filter(p => p.attendingDoctor === doc).length,
     })),
-    avgDays: patients.length ? Math.round(patients.reduce((sum, p) => sum + getDaysAdmitted(p.admissionDate), 0) / patients.length) : 0,
   };
 
   if (loading) {
@@ -193,6 +211,27 @@ export default function ServicePanel() {
             </div>
 
             <div className="flex items-center space-x-3">
+              <button
+                onClick={() => setShowAllTodosModal(true)}
+                className="px-4 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-all flex items-center space-x-2"
+                title="Tüm Yapılacaklar"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                </svg>
+                <span className="hidden lg:inline">Yapılacaklar</span>
+              </button>
+              <button
+                onClick={() => setShowSettingsModal(true)}
+                className="px-4 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-all flex items-center space-x-2"
+                title="Ayarlar"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span className="hidden lg:inline">Ayarlar</span>
+              </button>
               <button
                 onClick={() => exportPatientsToPDF(filteredPatients, selectedClinic.name)}
                 className="px-4 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-all flex items-center space-x-2"
@@ -254,24 +293,22 @@ export default function ServicePanel() {
       <div className="max-w-[1600px] mx-auto px-4 md:px-6 py-6 md:py-8">
         {/* Stats Section */}
         {showStats && (
-          <div className="mb-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
-              <div className="text-sm text-slate-500 mb-1">Toplam Hasta</div>
-              <div className="text-2xl font-bold text-sky-700">{stats.total}</div>
-            </div>
-            <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
-              <div className="text-sm text-slate-500 mb-1">Ort. Yatış Süresi</div>
-              <div className="text-2xl font-bold text-emerald-700">{stats.avgDays} gün</div>
-            </div>
-            <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm col-span-2">
-              <div className="text-sm text-slate-500 mb-2">Doktorlara Göre</div>
-              <div className="space-y-1">
-                {stats.byDoctor.slice(0, 2).map((doc, i) => (
-                  <div key={i} className="flex justify-between text-sm">
-                    <span className="text-slate-700 truncate mr-2">{doc.name}</span>
-                    <span className="font-semibold text-slate-900">{doc.count}</span>
-                  </div>
-                ))}
+          <div className="mb-6 space-y-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+                <div className="text-sm text-slate-500 mb-1">Toplam Hasta</div>
+                <div className="text-3xl font-bold text-sky-700">{stats.total}</div>
+              </div>
+              <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm col-span-2">
+                <div className="text-sm text-slate-500 mb-3">Doktorlara Göre</div>
+                <div className="grid grid-cols-2 gap-x-4 gap-y-2 max-h-32 overflow-y-auto">
+                  {stats.byDoctor.map((doc, i) => (
+                    <div key={i} className="flex justify-between text-sm">
+                      <span className="text-slate-700 truncate mr-2">{doc.name}</span>
+                      <span className="font-bold text-sky-700">{doc.count}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -401,6 +438,7 @@ export default function ServicePanel() {
                 onDelete={deletePatient}
                 onTransfer={transferPatient}
                 onUpdate={fetchPatients}
+                doctorColor={getDoctorColor(patient.attendingDoctor)}
               />
             ))}
           </div>
@@ -414,15 +452,15 @@ export default function ServicePanel() {
 
       {/* Mobile Bottom Navigation */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 shadow-lg">
-        <div className="grid grid-cols-5 gap-1 p-2">
+        <div className="grid grid-cols-6 gap-1 p-2">
           <button
             onClick={() => navigate('/panels')}
-            className="flex flex-col items-center py-2 text-slate-600 hover:text-sky-700"
+            className="flex flex-col items-center py-2 text-slate-600"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
             </svg>
-            <span className="text-[10px] mt-1">Ana Sayfa</span>
+            <span className="text-[10px] mt-1">Geri</span>
           </button>
           <button
             onClick={() => setShowAddModal(true)}
@@ -434,17 +472,27 @@ export default function ServicePanel() {
             <span className="text-[10px] mt-1 font-semibold">Ekle</span>
           </button>
           <button
-            onClick={() => exportPatientsToPDF(filteredPatients, selectedClinic.name)}
-            className="flex flex-col items-center py-2 text-slate-600 hover:text-purple-700"
+            onClick={() => setShowAllTodosModal(true)}
+            className="flex flex-col items-center py-2 text-emerald-700"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
             </svg>
-            <span className="text-[10px] mt-1">Yazdır</span>
+            <span className="text-[10px] mt-1">Todo</span>
+          </button>
+          <button
+            onClick={() => setShowSettingsModal(true)}
+            className="flex flex-col items-center py-2 text-slate-600"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span className="text-[10px] mt-1">Ayarlar</span>
           </button>
           <button
             onClick={toggleTheme}
-            className="flex flex-col items-center py-2 text-slate-600 hover:text-amber-700"
+            className="flex flex-col items-center py-2 text-slate-600"
           >
             {isDark ? (
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -459,7 +507,7 @@ export default function ServicePanel() {
           </button>
           <button
             onClick={handleLogout}
-            className="flex flex-col items-center py-2 text-slate-600 hover:text-red-700"
+            className="flex flex-col items-center py-2 text-slate-600"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -490,111 +538,29 @@ export default function ServicePanel() {
   );
 }
 
-// Patient Card Component with Expandable Details
-function PatientCard({ patient, isExpanded, onToggle, onDelete, onTransfer, onUpdate }: {
-  patient: Patient;
-  isExpanded: boolean;
-  onToggle: () => void;
-  onDelete: (id: string) => void;
-  onTransfer: (id: string, panelType: string) => void;
-  onUpdate: () => void;
-}) {
-  const days = Math.floor((Date.now() - new Date(patient.admissionDate).getTime()) / (1000 * 60 * 60 * 24));
 
-  return (
-    <div className="bg-white rounded-2xl border border-slate-200/50 shadow-md overflow-hidden transition-all">
-      {/* Card Header - Always Visible */}
-      <button
-        onClick={onToggle}
-        className="w-full p-4 md:p-6 text-left hover:bg-slate-50 transition-colors"
-      >
-        <div className="flex items-start justify-between mb-3">
-          <div className="flex items-center space-x-3">
-            {/* Room Number Badge */}
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-600 to-sky-700 flex items-center justify-center text-white font-bold shadow-lg">
-              {patient.roomNumber || '?'}
-            </div>
-            <div>
-              <h3 className="font-bold text-slate-900">
-                {patient.firstName} {patient.lastName}
-              </h3>
-              <p className="text-sm text-slate-500">{patient.age} yaş • {patient.gender}</p>
-            </div>
-          </div>
-          <div className="flex flex-col items-end space-y-1">
-            <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-medium">
-              {days} gün
-            </span>
-            <svg
-              className={`w-5 h-5 text-slate-400 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </div>
-        </div>
+      {/* Settings Modal */}
+      {showSettingsModal && (
+        <SettingsModal
+          onClose={() => setShowSettingsModal(false)}
+          onUpdate={() => {
+            loadDoctors();
+            fetchPatients();
+          }}
+        />
+      )}
 
-        {/* Quick Info */}
-        <div className="grid grid-cols-2 gap-2">
-          <div className="p-2 bg-slate-50 rounded-lg">
-            <div className="text-xs text-slate-500">Tanı</div>
-            <div className="font-semibold text-slate-900 text-sm truncate">{patient.diagnosis}</div>
-          </div>
-          <div className="p-2 bg-slate-50 rounded-lg">
-            <div className="text-xs text-slate-500">Yatak</div>
-            <div className="font-semibold text-slate-900 text-sm">{patient.bedNumber || '-'}</div>
-          </div>
-        </div>
-      </button>
-
-      {/* Expanded Details */}
-      {isExpanded && (
-        <div className="border-t border-slate-200 p-4 md:p-6 space-y-4 bg-slate-50/50">
-          {/* Doctor & Admission */}
-          <div className="space-y-2">
-            <div className="flex items-center text-sm">
-              <span className="text-slate-500 w-24">Doktor:</span>
-              <span className="font-semibold text-slate-900">{patient.attendingDoctor}</span>
-            </div>
-            <div className="flex items-center text-sm">
-              <span className="text-slate-500 w-24">Yatış:</span>
-              <span className="text-slate-700">{new Date(patient.admissionDate).toLocaleDateString('tr-TR')}</span>
-            </div>
-          </div>
-
-          {/* Visit Note */}
-          {patient.visitNote && (
-            <div>
-              <div className="text-xs text-slate-500 mb-1">Vizit Notu</div>
-              <div className="p-3 bg-white rounded-lg text-sm text-slate-700 max-h-20 overflow-y-auto">
-                {patient.visitNote}
-              </div>
-            </div>
-          )}
-
-          {/* Todos */}
-          <div>
-            <div className="text-xs text-slate-500 mb-2">Yapılacaklar ({patient.todos.filter(t => !t.completed).length}/{patient.todos.length})</div>
-            <div className="space-y-1 max-h-32 overflow-y-auto">
-              {patient.todos.slice(0, 3).map((todo) => (
-                <div key={todo.id} className="flex items-center space-x-2 text-sm">
-                  <div className={`w-4 h-4 rounded border-2 flex items-center justify-center ${todo.completed ? 'bg-emerald-500 border-emerald-500' : 'border-slate-300'}`}>
-                    {todo.completed && (
-                      <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    )}
-                  </div>
-                  <span className={todo.completed ? 'line-through text-slate-400' : 'text-slate-700'}>
-                    {todo.description}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
+      {/* All Todos Modal */}
+      {showAllTodosModal && (
+        <AllTodosModal
+          patients={patients}
+          onClose={() => setShowAllTodosModal(false)}
+          onUpdate={fetchPatients}
+        />
+      )}
+    </div>
+  );
+}
           {/* Orders */}
           {patient.orders.length > 0 && (
             <div>
@@ -654,7 +620,7 @@ function PatientTable({ patients, onSelect }: { patients: Patient[]; onSelect: (
         </thead>
         <tbody className="divide-y divide-slate-100">
           {patients.map((patient) => {
-            const days = Math.floor((Date.now() - new Date(patient.admissionDate).getTime()) / (1000 * 60 * 60 * 24));
+            const days = Math.floor((Date.now() - new Date(patient.admissionDate).getTime()) / (1000 * 60 * 60 * 24)) + 1;
             return (
               <tr
                 key={patient.id}
