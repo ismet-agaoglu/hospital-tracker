@@ -45,7 +45,7 @@ interface Order {
 
 export default function ServicePanel() {
   const navigate = useNavigate();
-  const { isDark, toggleTheme } = useTheme();
+  useTheme();
   const [patients, setPatients] = useState<Patient[]>([]);
   const [filteredPatients, setFilteredPatients] = useState<Patient[]>([]);
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
@@ -169,10 +169,6 @@ export default function ServicePanel() {
       }
       return newSet;
     });
-  };
-
-  const getDaysAdmitted = (admissionDate: string) => {
-    return Math.floor((Date.now() - new Date(admissionDate).getTime()) / (1000 * 60 * 60 * 24)) + 1;
   };
 
   // Stats
@@ -432,7 +428,6 @@ export default function ServicePanel() {
       {showAddModal && (
         <AddPatientModal
           clinicId={selectedClinic.id}
-          panelType="SERVIS"
           onClose={() => setShowAddModal(false)}
           onSuccess={fetchPatients}
         />

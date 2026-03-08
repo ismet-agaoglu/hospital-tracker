@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 
 const API_URL = '/api';
@@ -15,7 +15,7 @@ interface Todo {
   id: string;
   description: string;
   completed: boolean;
-  patientId: string;
+  patientId?: string;
 }
 
 interface Props {

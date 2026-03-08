@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface Doctor {
   name: string;
@@ -22,6 +23,7 @@ const PRESET_COLORS = [
 ];
 
 export default function SettingsModal({ onClose, onUpdate }: Props) {
+  const { isDark, toggleTheme, uiScale, setUiScale } = useTheme();
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [newDoctorName, setNewDoctorName] = useState('');
 
@@ -79,6 +81,70 @@ export default function SettingsModal({ onClose, onUpdate }: Props) {
 
         {/* Content */}
         <div className="p-4 md:p-8 overflow-y-auto flex-1 min-h-0">
+          <h3 className="text-lg font-bold text-slate-900 mb-3">Görünüm Ayarları</h3>
+
+          <div className="mb-8 p-4 bg-slate-50 rounded-xl space-y-4">
+            {/* Theme Toggle */}
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="font-semibold text-slate-900">Tema</div>
+                <div className="text-sm text-slate-500">Açık / Koyu mod geçişi</div>
+              </div>
+              <button
+                onClick={toggleTheme}
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${
+                  isDark
+                    ? 'bg-slate-900 text-white hover:bg-slate-800'
+                    : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'
+                }`}
+              >
+                {isDark ? 'Koyu Mod Açık' : 'Açık Mod Açık'}
+              </button>
+            </div>
+
+            {/* DPI / Scale */}
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <div>
+                  <div className="font-semibold text-slate-900">DPI / Ölçek</div>
+                  <div className="text-sm text-slate-500">Yazı ve arayüz boyutunu ayarlar</div>
+                </div>
+                <span className="text-sm font-bold text-sky-700">%{uiScale}</span>
+              </div>
+
+              <input
+                type="range"
+                min={85}
+                max={120}
+                step={1}
+                value={uiScale}
+                onChange={(e) => setUiScale(Number(e.target.value))}
+                className="w-full"
+              />
+
+              <div className="grid grid-cols-3 gap-2 mt-3">
+                <button
+                  onClick={() => setUiScale(90)}
+                  className="px-3 py-2 text-xs bg-white border border-slate-200 rounded-lg hover:bg-slate-100"
+                >
+                  Sıkışık
+                </button>
+                <button
+                  onClick={() => setUiScale(100)}
+                  className="px-3 py-2 text-xs bg-white border border-slate-200 rounded-lg hover:bg-slate-100"
+                >
+                  Normal
+                </button>
+                <button
+                  onClick={() => setUiScale(110)}
+                  className="px-3 py-2 text-xs bg-white border border-slate-200 rounded-lg hover:bg-slate-100"
+                >
+                  Büyük
+                </button>
+              </div>
+            </div>
+          </div>
+
           <h3 className="text-lg font-bold text-slate-900 mb-4">Doktor Yönetimi</h3>
 
           {/* Add Doctor */}
