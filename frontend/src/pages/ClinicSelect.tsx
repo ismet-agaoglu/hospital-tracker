@@ -59,17 +59,17 @@ export default function ClinicSelect() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-sky-50 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 flex items-center justify-center">
         <div className="text-center">
           <div className="inline-block w-16 h-16 border-4 border-sky-600 border-t-transparent rounded-full animate-spin mb-4" />
-          <p className="text-slate-600 font-medium">Klinikler yükleniyor...</p>
+          <p className="text-slate-600 dark:text-slate-300 font-medium">Klinikler yükleniyor...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-sky-50 to-slate-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-sky-50 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       {/* Decorative Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 right-0 w-96 h-96 bg-sky-200/20 rounded-full blur-3xl" />
@@ -77,20 +77,20 @@ export default function ClinicSelect() {
       </div>
 
       {/* Navbar */}
-      <nav className="relative z-10 backdrop-blur-sm bg-white/70 border-b border-slate-200/50">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
+      <nav className="relative z-10 backdrop-blur-sm bg-white/70 dark:bg-slate-900/70 border-b border-slate-200/50 dark:border-slate-700/60">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16 sm:h-20">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-gradient-to-br from-sky-600 to-sky-700 rounded-xl flex items-center justify-center">
                 <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
-              <span className="text-xl font-bold text-slate-900">Hospital Tracker</span>
+              <span className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100">Hospital Tracker</span>
             </div>
             <button
               onClick={handleLogout}
-              className="px-5 py-2.5 text-slate-600 hover:text-slate-900 font-medium transition-colors hover:bg-slate-100 rounded-xl"
+              className="px-4 sm:px-5 py-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-medium transition-colors hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl"
             >
               Çıkış Yap
             </button>
@@ -99,30 +99,30 @@ export default function ClinicSelect() {
       </nav>
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-16">
-        <div className="mb-12">
-          <h1 className="text-4xl font-bold text-slate-900 mb-3">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+        <div className="mb-8 sm:mb-12">
+          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-3">
             Klinik Seçin
           </h1>
-          <p className="text-lg text-slate-600">
+          <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300">
             Çalışmak istediğiniz kliniği seçerek devam edin
           </p>
         </div>
 
         {error && (
-          <div className="mb-8 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl">
+          <div className="mb-8 p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 text-red-700 dark:text-red-200 rounded-xl">
             {error}
           </div>
         )}
 
         {clinics.length === 0 ? (
           <div className="text-center py-20">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-slate-100 rounded-full mb-4">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-slate-100 dark:bg-slate-800 rounded-full mb-4">
               <svg className="w-10 h-10 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
             </div>
-            <p className="text-slate-600 text-lg">Henüz erişiminiz olan bir klinik yok.</p>
+            <p className="text-slate-600 dark:text-slate-300 text-lg">Henüz erişiminiz olan bir klinik yok.</p>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -130,7 +130,7 @@ export default function ClinicSelect() {
               <button
                 key={clinic.id}
                 onClick={() => selectClinic(clinic)}
-                className="group relative bg-white rounded-2xl p-6 shadow-lg border border-slate-200/50 hover:shadow-xl transition-all hover:-translate-y-1 text-left overflow-hidden"
+                className="group relative bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-lg border border-slate-200/50 dark:border-slate-700/60 hover:shadow-xl transition-all hover:-translate-y-1 text-left overflow-hidden"
               >
                 {/* Gradient Overlay on Hover */}
                 <div className="absolute inset-0 bg-gradient-to-br from-sky-500/0 to-emerald-500/0 group-hover:from-sky-500/5 group-hover:to-emerald-500/5 transition-all" />
@@ -145,11 +145,11 @@ export default function ClinicSelect() {
                   </div>
 
                   {/* Clinic Info */}
-                  <h3 className="text-xl font-bold text-slate-900 mb-2">
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">
                     {clinic.name}
                   </h3>
                   {clinic.address && (
-                    <p className="text-sm text-slate-500 mb-4 flex items-center">
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-4 flex items-center">
                       <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -160,14 +160,14 @@ export default function ClinicSelect() {
 
                   {/* Stats */}
                   {clinic._count && (
-                    <div className="flex items-center space-x-4 pt-4 border-t border-slate-100">
-                      <div className="flex items-center text-sm text-slate-600">
+                    <div className="flex items-center space-x-4 pt-4 border-t border-slate-100 dark:border-slate-700">
+                      <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
                         <svg className="w-4 h-4 mr-1.5 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                         </svg>
                         <span className="font-medium">{clinic._count.users}</span>
                       </div>
-                      <div className="flex items-center text-sm text-slate-600">
+                      <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
                         <svg className="w-4 h-4 mr-1.5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>

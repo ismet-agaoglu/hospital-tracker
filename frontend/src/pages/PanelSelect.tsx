@@ -45,7 +45,7 @@ export default function PanelSelect() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-sky-50 to-slate-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-sky-50 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       {/* Decorative Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sky-200/20 rounded-full blur-3xl" />
@@ -53,9 +53,9 @@ export default function PanelSelect() {
       </div>
 
       {/* Navbar */}
-      <nav className="relative z-10 backdrop-blur-sm bg-white/70 border-b border-slate-200/50">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
+      <nav className="relative z-10 backdrop-blur-sm bg-white/70 dark:bg-slate-900/70 border-b border-slate-200/50 dark:border-slate-700/60">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16 sm:h-20">
             <div className="flex items-center space-x-4">
               <div className="w-10 h-10 bg-gradient-to-br from-sky-600 to-sky-700 rounded-xl flex items-center justify-center">
                 <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -63,20 +63,20 @@ export default function PanelSelect() {
                 </svg>
               </div>
               <div>
-                <div className="text-sm text-slate-500">Klinik</div>
-                <div className="font-bold text-slate-900">{selectedClinic.name}</div>
+                <div className="text-sm text-slate-500 dark:text-slate-400">Klinik</div>
+                <div className="font-bold text-slate-900 dark:text-slate-100">{selectedClinic.name}</div>
               </div>
             </div>
             <div className="flex items-center space-x-3">
               <button
                 onClick={() => navigate('/clinics')}
-                className="px-4 py-2 text-slate-600 hover:text-slate-900 font-medium transition-colors hover:bg-slate-100 rounded-xl"
+                className="px-4 py-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-medium transition-colors hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl"
               >
                 ← Klinik Değiştir
               </button>
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 text-slate-600 hover:text-slate-900 font-medium transition-colors hover:bg-slate-100 rounded-xl"
+                className="px-4 py-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-medium transition-colors hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl"
               >
                 Çıkış
               </button>
@@ -86,12 +86,12 @@ export default function PanelSelect() {
       </nav>
 
       {/* Content */}
-      <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-8 py-20">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold text-slate-900 mb-4">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
+        <div className="text-center mb-10 sm:mb-16">
+          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4">
             Panel Seçin
           </h1>
-          <p className="text-lg text-slate-600">
+          <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300">
             Hangi modülde çalışmak istersiniz?
           </p>
         </div>
@@ -101,7 +101,7 @@ export default function PanelSelect() {
             <button
               key={panel.id}
               onClick={() => navigate(panel.route)}
-              className="group relative bg-white rounded-3xl p-8 shadow-xl border border-slate-200/50 hover:shadow-2xl transition-all hover:-translate-y-2 text-left overflow-hidden"
+              className="group relative bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-200/50 dark:border-slate-700/60 hover:shadow-2xl transition-all hover:-translate-y-2 text-left overflow-hidden"
             >
               {/* Gradient Background on Hover */}
               <div className={`absolute inset-0 bg-gradient-to-br ${panel.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
@@ -115,17 +115,17 @@ export default function PanelSelect() {
 
               {/* Content */}
               <div className="relative z-10">
-                <h3 className="text-2xl font-bold text-slate-900 mb-3">
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">
                   {panel.title}
                 </h3>
-                <p className="text-slate-600 leading-relaxed mb-6">
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
                   {panel.description}
                 </p>
 
                 {/* Features */}
                 <div className="space-y-2 mb-6">
                   {panel.features.map((feature, i) => (
-                    <div key={i} className="flex items-center text-sm text-slate-700">
+                    <div key={i} className="flex items-center text-sm text-slate-700 dark:text-slate-300">
                       <svg className="w-5 h-5 mr-2 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
@@ -137,7 +137,7 @@ export default function PanelSelect() {
                 {/* CTA */}
                 <div className={`inline-flex items-center space-x-2 font-semibold bg-gradient-to-r ${panel.gradient} bg-clip-text text-transparent`}>
                   <span>Panele Git</span>
-                  <svg className="w-5 h-5 text-slate-400 group-hover:text-slate-600 group-hover:translate-x-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-5 h-5 text-slate-400 dark:text-slate-500 group-hover:text-slate-600 dark:group-hover:text-slate-300 group-hover:translate-x-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                 </div>
@@ -151,10 +151,10 @@ export default function PanelSelect() {
 
         {/* Coming Soon */}
         <div className="mt-16 text-center">
-          <p className="text-slate-500 mb-4">
-            <strong className="text-slate-700">Yakında:</strong> Ameliyat Paneli, Acil Paneli, Laboratuvar Paneli
+          <p className="text-slate-500 dark:text-slate-400 mb-4">
+            <strong className="text-slate-700 dark:text-slate-200">Yakında:</strong> Ameliyat Paneli, Acil Paneli, Laboratuvar Paneli
           </p>
-          <div className="inline-flex items-center space-x-2 px-4 py-2 bg-slate-100 rounded-full text-sm text-slate-600">
+          <div className="inline-flex items-center space-x-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 rounded-full text-sm text-slate-600 dark:text-slate-300">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
