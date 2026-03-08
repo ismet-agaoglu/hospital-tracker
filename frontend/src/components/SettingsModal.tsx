@@ -61,9 +61,9 @@ export default function SettingsModal({ onClose, onUpdate }: Props) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pb-20 md:pb-4 bg-black/50 backdrop-blur-sm overflow-y-auto">
-      <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[calc(100vh-140px)] md:max-h-[90vh] overflow-hidden shadow-2xl my-auto">
+      <div className="bg-white rounded-2xl max-w-2xl w-full h-[calc(100vh-140px)] md:h-auto md:max-h-[90vh] overflow-hidden shadow-2xl my-auto flex flex-col">
         {/* Header */}
-        <div className="bg-gradient-to-r from-sky-600 to-emerald-600 px-8 py-6 text-white">
+        <div className="bg-gradient-to-r from-sky-600 to-emerald-600 px-4 md:px-8 py-4 md:py-6 text-white">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold">Ayarlar</h2>
             <button
@@ -78,11 +78,11 @@ export default function SettingsModal({ onClose, onUpdate }: Props) {
         </div>
 
         {/* Content */}
-        <div className="p-8 overflow-y-auto max-h-[calc(90vh-120px)]">
+        <div className="p-4 md:p-8 overflow-y-auto flex-1 min-h-0">
           <h3 className="text-lg font-bold text-slate-900 mb-4">Doktor Yönetimi</h3>
 
           {/* Add Doctor */}
-          <div className="flex space-x-2 mb-6">
+          <div className="flex flex-col sm:flex-row gap-2 mb-6">
             <input
               type="text"
               value={newDoctorName}
@@ -109,7 +109,7 @@ export default function SettingsModal({ onClose, onUpdate }: Props) {
               doctors.map((doctor, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between p-4 bg-slate-50 rounded-xl"
+                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 bg-slate-50 rounded-xl"
                 >
                   <div className="flex items-center space-x-3">
                     <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${doctor.color} flex items-center justify-center text-white font-bold shadow-lg`}>
@@ -153,7 +153,7 @@ export default function SettingsModal({ onClose, onUpdate }: Props) {
         </div>
 
         {/* Footer */}
-        <div className="border-t border-slate-200 px-8 py-4 flex justify-end">
+        <div className="border-t border-slate-200 px-4 md:px-8 py-3 md:py-4 flex justify-end">
           <button
             onClick={onClose}
             className="px-6 py-3 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 transition-colors font-semibold"

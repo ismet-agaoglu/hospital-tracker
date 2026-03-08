@@ -131,15 +131,15 @@ export default function PatientDetailModal({ patient, onClose, onUpdate }: Props
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pb-20 md:pb-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto">
-      <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[calc(100vh-140px)] md:max-h-[90vh] overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 my-auto">
+      <div className="bg-white rounded-2xl max-w-4xl w-full h-[calc(100vh-140px)] md:h-auto md:max-h-[90vh] overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 my-auto flex flex-col">
         {/* Header */}
-        <div className="bg-gradient-to-r from-sky-600 to-emerald-600 px-8 py-6 text-white">
+        <div className="bg-gradient-to-r from-sky-600 to-emerald-600 px-4 md:px-8 py-4 md:py-6 text-white">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-3xl font-bold mb-2">
+              <h2 className="text-xl md:text-3xl font-bold mb-2 leading-tight">
                 {patient.firstName} {patient.lastName}
               </h2>
-              <div className="flex items-center space-x-4 text-sky-100">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sky-100 text-sm md:text-base">
                 <span>{patient.age} yaş</span>
                 <span>•</span>
                 <span>{formatGender(patient.gender)}</span>
@@ -159,8 +159,8 @@ export default function PatientDetailModal({ patient, onClose, onUpdate }: Props
         </div>
 
         {/* Tabs */}
-        <div className="border-b border-slate-200 bg-slate-50">
-          <div className="flex space-x-8 px-8">
+        <div className="border-b border-slate-200 bg-slate-50 overflow-x-auto">
+          <div className="flex space-x-4 md:space-x-8 px-4 md:px-8 min-w-max">
             {[
               { id: 'info', label: 'Genel Bilgiler', icon: '📋' },
               { id: 'todos', label: 'Yapılacaklar', icon: '✅', count: patient.todos.length },
@@ -169,7 +169,7 @@ export default function PatientDetailModal({ patient, onClose, onUpdate }: Props
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`relative py-4 font-semibold transition-colors ${
+                className={`relative py-3 md:py-4 font-semibold transition-colors whitespace-nowrap text-sm md:text-base ${
                   activeTab === tab.id
                     ? 'text-sky-700'
                     : 'text-slate-500 hover:text-slate-700'
@@ -193,7 +193,7 @@ export default function PatientDetailModal({ patient, onClose, onUpdate }: Props
         </div>
 
         {/* Content */}
-        <div className="p-8 overflow-y-auto max-h-[calc(90vh-180px)]">
+        <div className="p-4 md:p-8 overflow-y-auto flex-1 min-h-0">
           {activeTab === 'info' && (
             <div className="space-y-6">
               {/* Basic Info Grid */}
