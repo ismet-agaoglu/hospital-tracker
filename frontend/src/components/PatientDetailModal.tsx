@@ -130,8 +130,14 @@ export default function PatientDetailModal({ patient, onClose, onUpdate }: Props
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pb-20 md:pb-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto">
-      <div className="bg-white rounded-2xl max-w-4xl w-full h-[calc(100vh-140px)] md:h-auto md:max-h-[90vh] overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 my-auto flex flex-col">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 pb-20 md:pb-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-2xl max-w-4xl w-full h-[calc(100vh-140px)] md:h-auto md:max-h-[90vh] overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 my-auto flex flex-col"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Header */}
         <div className="bg-gradient-to-r from-sky-600 to-emerald-600 px-4 md:px-8 py-4 md:py-6 text-white">
           <div className="flex items-center justify-between">
