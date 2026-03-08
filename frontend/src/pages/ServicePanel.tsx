@@ -317,8 +317,8 @@ export default function ServicePanel() {
               </svg>
             </button>
 
-            {/* View Toggle - Desktop Only */}
-            <div className="hidden lg:flex flex-shrink-0 border border-slate-200 rounded-lg">
+            {/* View Toggle */}
+            <div className="flex flex-shrink-0 border border-slate-200 rounded-lg">
               <button
                 onClick={() => setViewMode('card')}
                 className={`p-2 ${viewMode === 'card' ? 'bg-sky-600 text-white' : 'text-slate-500'} rounded-l-lg transition-colors`}
